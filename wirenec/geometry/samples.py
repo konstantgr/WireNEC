@@ -44,4 +44,4 @@ def double_SRR(
 
 if __name__ == "__main__":
     g = double_SRR()
-    plot_geometry(g)
+    plot_geometry(g, from_top=True)
