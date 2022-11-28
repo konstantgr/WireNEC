@@ -40,10 +40,28 @@ def dipolar_limit(freq):
     for i, l in enumerate(lengths):
         g = Geometry([Wire((0, 0, -l/2), (0, 0, l/2), 0.5*1e-3)])
         f = freq[i]
-        scattering = get_scattering_in_frequency_range(g, [f], 90, 90, 0)
-        res.append(scattering[0])
+        scattering = get_scattering_in_frequency_range(g, [f], 90, 90, 0, 270)
+        res.append(scattering[0][0])
 
-    return freq, res
+    return freq, np.array(res)
+
+
+def get_random_geometry(N, classes_num=2, seed=None):
+    if seed is not None:
+        np.random.seed(seed)
+
+    alphas = np.random.rand(N, N) * 2 * np.pi
+    lengths_ratios = np.random.rand(N, N)
+    classes = np.random.randint(classes_num, size=(N, N))
+    objs = np.empty((N, N), Geometry)
+
+    for i in range(N):
+        for j in range(N):
+            objs[i, j] = TrivialObject(
+                classes[i, j], lengths_ratios[i, j], alphas[i, j]
+            ).object
+
+    return mask_geometry(objs)
 
 
 def mask_geometry(
@@ -51,8 +69,6 @@ def mask_geometry(
     tau_x=20*1e-3,
     tau_y=20*1e-3,
 ):
-    np.random.seed(42)
-
     M, N = objs.shape
     a_x = tau_x * N
     a_y = tau_y * M
@@ -69,3 +85,38 @@ def mask_geometry(
             wires += g.wires
 
     return Geometry(wires)
+
+
+def vba_wire(p1, p2, wire_radius, name):
+    x1, y1, z1 = p1
+    x2, y2, z2 = p2
+    s = f'''With Wire
+     .Reset 
+     .Name "{name}" 
+     .Folder "" 
+     .Type "BondWire" 
+     .Height "0" 
+     .Radius "{wire_radius}" 
+     .Point1 "{x1}", "{y1}", "{z1}", "False"
+     .Point2 "{x2}", "{y2}", "{z2}", "False"
+     .BondWireType "Spline" 
+     .Alpha "75" 
+     .Beta "35" 
+     .RelativeCenterPosition "0.5" 
+     .Material "PEC" 
+     .SolidWireModel "False" 
+     .Termination "Extended" 
+     .Add
+    End With'''
+    return s
+
+
+def get_macros(g):
+    s = ''
+    for i, wire in enumerate(g.wires):
+        p1, p2 = wire.p1 * 1e3, wire.p2 * 1e3
+        wire_radius = wire.radius * 1e3
+        s += '\n' + vba_wire(p1, p2, wire_radius, str(i)) + '\n'
+    return s
+
+

@@ -6,23 +6,8 @@ from pathlib import Path
 from wirenec.geometry import Geometry
 from wirenec.visualization import plot_geometry, scattering_plot
 
-from utils import TrivialObject, mask_geometry, dipolar_limit
+from utils import TrivialObject, mask_geometry, dipolar_limit, get_random_geometry
 from optimizer import cma_optimizer, objective_function
-
-
-def get_random_geometry(N, classes_num=2):
-    alphas = np.random.rand(N, N) * 2 * np.pi
-    lengths_ratios = np.random.rand(N, N)
-    classes = np.random.randint(classes_num, size=(N, N))
-    objs = np.empty((N, N), Geometry)
-
-    for i in range(N):
-        for j in range(N):
-            objs[i, j] = TrivialObject(
-                classes[i, j], lengths_ratios[i, j], alphas[i, j]
-            ).object
-
-    return mask_geometry(objs)
 
 
 if __name__ == "__main__":

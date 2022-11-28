@@ -18,7 +18,7 @@ def scattering_plot(
     step = (frequency_finish - frequency_start) // num_points
     frequency_range = range(frequency_start,
                             frequency_finish + step,
-                            step)
+                            step+1)
 
     scattering, _ = get_scattering_in_frequency_range(
         geometry, frequency_range,
