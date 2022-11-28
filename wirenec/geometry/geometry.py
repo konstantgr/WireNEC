@@ -5,8 +5,8 @@ import numpy as np
 class Wire:
     def __init__(
         self,
-        point1: np.ndarray,
-        point2: np.ndarray,
+        point1: [np.ndarray, list, tuple],
+        point2: [np.ndarray, list, tuple],
         radius: float = 0.5*1e-3,
         segments: int = 8,
         conductivity: float = None, kind=None

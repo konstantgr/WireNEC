@@ -1,7 +1,6 @@
-import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
-from mpl_toolkits.mplot3d import Axes3D
+
 
 kind_colors = {
     None: 'b',
@@ -9,13 +8,13 @@ kind_colors = {
 }
 
 
-def plot_geometry(g, from_top=False):
+def plot_geometry(g, from_top=False, save_to=None):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection="3d")
     plot_params = {
-        "linewidth": 3,
+        "linewidth": 1,
         "alpha": 0.8,
-        "path_effects": [path_effects.SimpleLineShadow(), path_effects.Normal()]
+        # "path_effects": [path_effects.SimpleLineShadow(), path_effects.Normal()]
     }
 
     if from_top:
@@ -30,13 +29,6 @@ def plot_geometry(g, from_top=False):
                 color=kind_colors[wire.kind],
                 **plot_params)
 
-    # if plane:
-    #     x = np.linspace(np.min([wire.p1[0] for wire in wires])*1.2, np.max([wire.p1[0] for wire in wires])*1.2, 100)
-    #     y = np.linspace(np.min([wire.p1[1] for wire in wires])*1.2, np.max([wire.p1[1] for wire in wires])*1.2, 100)
-    #     x, y = np.meshgrid(x, y)
-    #     eq = 0 * x + 0 * y + 0
-    #     ax.plot_surface(x, y, eq, color='grey', alpha=0.2)
-
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
@@ -49,5 +41,8 @@ def plot_geometry(g, from_top=False):
     ax.xaxis._axinfo["grid"]['color'] = (1, 1, 1, 0)
     ax.yaxis._axinfo["grid"]['color'] = (1, 1, 1, 0)
     ax.zaxis._axinfo["grid"]['color'] = (1, 1, 1, 0)
+
+    if save_to is not None:
+        plt.savefig(save_to, bbox_inches='tight', dpi=200)
 
     plt.show()

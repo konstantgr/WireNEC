@@ -1,4 +1,5 @@
 import numpy as np
+from tqdm import tqdm
 
 from wirenec.geometry import Geometry
 
@@ -22,14 +23,15 @@ def plane_wave(context, frequency, theta=90, phi=90, eta=0, phi0=270):
 
 
 def get_scattering_in_frequency_range(
-        geometry: Geometry, frequency_range: range,
-        theta=90, phi=90, eta=90, scattering_phi_angle=270
+        geometry: Geometry, frequency_range: [range, np.ndarray],
+        theta=90, phi=90, eta=90, scattering_phi_angle=270, progress_bar=False
 ) -> (np.ndarray, np.ndarray):
 
     c_const = 299792458
     scattering_array, gain_array = [], []
     wires = geometry.wires
-    for frequency in frequency_range:
+    iterator = tqdm(frequency_range) if progress_bar else frequency_range
+    for frequency in iterator:
         lmbda = c_const / (frequency * 1e6)
 
         g = Geometry(wires)

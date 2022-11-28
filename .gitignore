@@ -1,1 +1,3 @@
 .idea/
+.venv/
+.optimizations/broadband_scatterer/data/optimization/

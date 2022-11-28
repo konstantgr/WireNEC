@@ -42,6 +42,20 @@ def double_SRR(
     return Geometry(g_inner.wires + g_outer.wires)
 
 
+def double_srr_6GHz(
+        r=3.25 * 1e-3,
+        p0=(0, 0, 0),
+        wr=0.25*1e-3,
+        num=12):
+    g = double_SRR(
+        inner_radius=r - 1e-3, outer_radius=r,
+        wire_radius=wr, num_of_wires=num
+    )
+    g.translate(p0)
+
+    return g
+
+
 if __name__ == "__main__":
     g = double_SRR()
     plot_geometry(g, from_top=True)
