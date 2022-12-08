@@ -120,3 +120,12 @@ def get_macros(g):
     return s
 
 
+def read_data_cst(path):
+    with open(path, 'r') as f:
+        tmp = f.readlines()
+
+    d = []
+    for line in tmp[4:-1]:
+        d.append(line.strip().split())
+    x, y = np.array(d).astype(float).T
+    return x * 1000, y

@@ -11,12 +11,13 @@ from optimizer import cma_optimizer, objective_function
 
 
 if __name__ == "__main__":
-    N = 2
+    N = 3
     seed = 42
 
     hyperparams = {
         'iterations': 100, 'N': N, 'seed': seed,
-        "frequencies": (9_000, 10_000, 10_500),
+        "frequencies": tuple([7_000, 9_000, 10_000]),
+        "scattering_angle": 90
     }
     d = cma_optimizer(**hyperparams)
     g_random = get_random_geometry(N=N)
@@ -40,7 +41,13 @@ if __name__ == "__main__":
     scattering_plot(
         ax[0], g_optimized, eta=90, num_points=100,
         scattering_phi_angle=90,
-        label='Optimized Geometry'
+        label='Optimized Geometry. Backward'
+    )
+
+    scattering_plot(
+        ax[0], g_optimized, eta=90, num_points=100,
+        scattering_phi_angle=270,
+        label='Optimized Geometry. Forward'
     )
 
     x, y = dipolar_limit(np.linspace(5_000, 14_000, 100))

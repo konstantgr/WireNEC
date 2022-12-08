@@ -13,8 +13,8 @@ from utils import TrivialObject, mask_geometry
 
 def objective_function(
         params, N=2,
-        freq: [list, tuple, np.ndarray] = (7_000, 8000, 9_000, 12_000),
-        geometry=False
+        freq: [list, tuple, np.ndarray] = tuple([10_000]),
+        geometry=False, scattering_angle=90
 ):
     classes_params, lengths_params, angles_params = (params[:N**2].reshape((N, N)),
                                                      params[N**2:2*N**2].reshape((N, N)),
@@ -30,9 +30,9 @@ def objective_function(
     g = mask_geometry(objs)
     if not geometry:
         scattering, _ = get_scattering_in_frequency_range(
-            g, freq, 90, 90, 90, 90
+            g, freq, 90, 90, 90, scattering_angle
         )
-        return (-1) * np.mean(scattering)
+        return (-1) * np.prod(scattering)
     else:
         return g
 
@@ -42,7 +42,8 @@ def cma_optimizer(
         seed=48,
         frequencies=tuple([9_000]),
         N=2,
-        plot_progress=False
+        plot_progress=False,
+        scattering_angle=90
 ):
     np.random.seed(seed)
 
@@ -67,7 +68,7 @@ def cma_optimizer(
     cnt = 0
     max_value, max_params = 0, []
 
-    num_for_progress, slope_for_progress = 40, 1e-8
+    num_for_progress, slope_for_progress = 100, 1e-8
 
     pbar = tqdm(range(iterations))
     progress = []
@@ -79,7 +80,7 @@ def cma_optimizer(
             params = optimizer.ask()
 
             value = objective_function(
-                params, freq=frequencies, N=N
+                params, freq=frequencies, N=N, scattering_angle=scattering_angle
             )
             values.append(value)
             if abs(value) > max_value:

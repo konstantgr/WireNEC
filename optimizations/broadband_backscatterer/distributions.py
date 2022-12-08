@@ -48,8 +48,13 @@ def monte_carlo(num=1000):
             scattering_phi_angle=90,
             label='Optimized Geometry, back scattering'
         )
-
         band = get_band(np.linspace(5_000, 14_000, 100), sc)
+        if band > 7000:
+            plt.plot(_, sc)
+            plt.plot(*dipolar_limit(np.linspace(5_000, 14_000, 100)))
+
+            plot_geometry(g, from_top=True)
+
         bands.append(band)
     return np.array(bands)
 
@@ -94,7 +99,7 @@ if __name__ == "__main__":
 
     calc_data = False
     if calc_data:
-        bands = monte_carlo(num=500)
+        bands = monte_carlo(num=1000)
         with open(path, 'wb') as f:
             np.save(f, bands)
 

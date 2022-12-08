@@ -22,7 +22,7 @@ def SRR(
     wires = []
     for i in range(n):
         p0, p1 = (x[i], y[i], 0), (x[i + 1], y[i + 1], 0)
-        w = Wire(p0, p1, wire_radius, segments=2, kind='SRR')
+        # w = Wire(p0, p1, wire_radius, segments=2, kind='SRR')
         wires.append(Wire(p0, p1, wire_radius, segments=2, kind='SRR'))
 
     return Geometry(wires)
