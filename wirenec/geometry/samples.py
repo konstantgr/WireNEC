@@ -22,7 +22,7 @@ def SRR(
     wires = []
     for i in range(n):
         p0, p1 = (x[i], y[i], 0), (x[i + 1], y[i + 1], 0)
-        w = Wire(p0, p1, wire_radius, segments=2, kind='SRR')
+        # w = Wire(p0, p1, wire_radius, segments=2, kind='SRR')
         wires.append(Wire(p0, p1, wire_radius, segments=2, kind='SRR'))
 
     return Geometry(wires)
@@ -40,6 +40,20 @@ def double_SRR(
     g_inner = SRR(inner_radius, gap, delta_phi + delta_phi_inner, wire_radius, num_of_wires)
     g_outer = SRR(outer_radius, gap, delta_phi, wire_radius, num_of_wires)
     return Geometry(g_inner.wires + g_outer.wires)
+
+
+def double_srr_6GHz(
+        r=3.25 * 1e-3,
+        p0=(0, 0, 0),
+        wr=0.25*1e-3,
+        num=12):
+    g = double_SRR(
+        inner_radius=r - 1e-3, outer_radius=r,
+        wire_radius=wr, num_of_wires=num
+    )
+    g.translate(p0)
+
+    return g
 
 
 if __name__ == "__main__":
