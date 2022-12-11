@@ -11,6 +11,7 @@ python = "^3.11"
 numpy = "^1.23.5"
 pynec = "1.7.3.4"
 matplotlib = "^3.6.2"
+tqdm = "^4.64.1"
 
 
 [build-system]
