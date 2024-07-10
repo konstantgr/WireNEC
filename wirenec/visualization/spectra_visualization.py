@@ -11,6 +11,7 @@ def scattering_plot(
     phi: [float, int] = 90,
     eta: [float, int] = 0,
     scattering_phi_angle: [float, int] = 270,
+    scattering_theta_angle: [float, int] = 90,
     log: bool = False,
     num_points: int = 100,
     **plot_dict,
@@ -19,7 +20,9 @@ def scattering_plot(
     step = (frequency_finish - frequency_start) // num_points
     frequency_range = range(frequency_start, frequency_finish + step, step + 1)
 
-    scattering, _ = get_scattering_in_frequency_range(geometry, frequency_range, theta, phi, eta, scattering_phi_angle)
+    scattering, _ = get_scattering_in_frequency_range(
+        geometry, frequency_range, theta, phi, eta, scattering_phi_angle, scattering_theta_angle
+    )
 
     if ax:
         ax.set_xlabel("Frequency (MHz)", fontsize=16)
