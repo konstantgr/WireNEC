@@ -1,5 +1,5 @@
-from PyNEC import nec_context
 import numpy as np
+from PyNEC import nec_context
 
 
 class Wire:
@@ -7,9 +7,10 @@ class Wire:
         self,
         point1: [np.ndarray, list, tuple],
         point2: [np.ndarray, list, tuple],
-        radius: float = 0.5*1e-3,
+        radius: float = 0.5 * 1e-3,
         segments: int = 8,
-        conductivity: float = None, kind=None
+        conductivity: float = None,
+        kind=None,
     ):
         if not (isinstance(point1, np.ndarray) and isinstance(point1, np.ndarray)):
             point1, point2 = np.array(point1), np.array(point2)
@@ -23,7 +24,7 @@ class Wire:
 
     @property
     def length(self):
-        return np.sqrt(np.sum((self.p1 - self.p2)**2))
+        return np.sqrt(np.sum((self.p1 - self.p2) ** 2))
 
 
 class Geometry:
@@ -33,8 +34,8 @@ class Geometry:
         self.context = self.make_context(self.scale)
 
     def set_wire_conductivity(self, context, conductivity, wire_tag=None):
-        """ The conductivity is specified in mhos/meter. Currently all segments of a wire are set. If wire_tag is
-        None, all wire_tags are set (i.e., a tag of 0 is used). """
+        """The conductivity is specified in mhos/meter. Currently all segments of a wire are set. If wire_tag is
+        None, all wire_tags are set (i.e., a tag of 0 is used)."""
         if wire_tag is None:
             wire_tag = 0
 
@@ -50,11 +51,7 @@ class Geometry:
                 continue
 
             # try:
-            geo.wire(
-                idx + 1, wire.segments,
-                *wire.p1, *wire.p2, wire.radius,
-                1, 1
-            )
+            geo.wire(idx + 1, wire.segments, *wire.p1, *wire.p2, wire.radius, 1, 1)
 
         geo.scale(scale)
         context.geometry_complete(0)
@@ -75,21 +72,9 @@ class Geometry:
         return self
 
     def rotate(self, alpha=0, beta=0, gamma=0):
-        Rz = np.array([
-            [np.cos(alpha), -np.sin(alpha), 0],
-            [np.sin(alpha), np.cos(alpha), 0],
-            [0, 0, 1]
-        ])
-        Ry = np.array([
-            [np.cos(beta), 0, np.sin(beta)],
-            [0, 1, 0],
-            [-np.sin(beta), 0, np.cos(beta)]
-        ])
-        Rx = np.array([
-            [1, 0, 0],
-            [0, np.cos(gamma), -np.sin(gamma)],
-            [0, np.sin(gamma), np.cos(gamma)]
-        ])
+        Rz = np.array([[np.cos(alpha), -np.sin(alpha), 0], [np.sin(alpha), np.cos(alpha), 0], [0, 0, 1]])
+        Ry = np.array([[np.cos(beta), 0, np.sin(beta)], [0, 1, 0], [-np.sin(beta), 0, np.cos(beta)]])
+        Rx = np.array([[1, 0, 0], [0, np.cos(gamma), -np.sin(gamma)], [0, np.sin(gamma), np.cos(gamma)]])
         R = Rz.dot(Ry).dot(Rx)
 
         new_wires = []

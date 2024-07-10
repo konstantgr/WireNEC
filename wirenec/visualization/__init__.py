@@ -1,3 +1,2 @@
-from wirenec.visualization.geometry_visualization import plot_geometry
-from wirenec.visualization.spectra_visualization import scattering_plot
-
+from wirenec.visualization.geometry_visualization import plot_geometry as plot_geometry
+from wirenec.visualization.spectra_visualization import scattering_plot as scattering_plot
