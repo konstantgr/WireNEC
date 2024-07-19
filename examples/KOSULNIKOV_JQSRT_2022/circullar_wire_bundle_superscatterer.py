@@ -1,7 +1,7 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
-from wirenec.geometry import Wire, Geometry
+from wirenec.geometry import Geometry, Wire
 from wirenec.scattering import get_scattering_in_frequency_range
 from wirenec.visualization import plot_geometry
 
@@ -11,10 +11,7 @@ def get_circullar_geometry(R, N, length, delta_phi=0):
     x = R * np.cos(phi)
     y = R * np.sin(phi)
 
-    wires = [
-        Wire((x[i], y[i], -length / 2), (x[i], y[i], length / 2))
-        for i in range(phi.size)
-    ]
+    wires = [Wire((x[i], y[i], -length / 2), (x[i], y[i], length / 2)) for i in range(phi.size)]
 
     return Geometry(wires)
 
@@ -31,12 +28,16 @@ def plot_heatmap(R_array, F_array, f0=6750, R0=20 * 1e-3):
 
     extent = (F_array.min() / f0, F_array.max() / f0, R_array.min() / R0, R_array.max() / R0)
     plt.imshow(
-        data, vmax=0.07, extent=extent,
-        cmap='jet', interpolation='nearest',
-        origin='lower', aspect='auto',
+        data,
+        vmax=0.07,
+        extent=extent,
+        cmap="jet",
+        interpolation="nearest",
+        origin="lower",
+        aspect="auto",
     )
-    plt.xlabel(r'$f\; / \; f_0$', fontsize=14)
-    plt.ylabel(r'$R \; / \; L$', fontsize=14)
+    plt.xlabel(r"$f\; / \; f_0$", fontsize=14)
+    plt.ylabel(r"$R \; / \; L$", fontsize=14)
     plt.colorbar()
 
     plt.show()
@@ -52,9 +53,9 @@ if __name__ == "__main__":
 
     fig, ax = plt.subplots(figsize=(6, 4))
     ax.plot(fr, sc)
-    ax.set_xlabel('Frequency (MHz)')
-    ax.set_ylabel('Forward Scattering (m^2)')
-    ax.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
+    ax.set_xlabel("Frequency (MHz)")
+    ax.set_ylabel("Forward Scattering (m^2)")
+    ax.ticklabel_format(style="sci", axis="y", scilimits=(0, 0))
     plt.show()
 
     plot_geometry(g)

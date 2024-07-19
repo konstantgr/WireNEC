@@ -1,9 +1,8 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
-from wirenec.geometry import Wire, Geometry
+from wirenec.geometry import Geometry, Wire
 from wirenec.scattering import get_scattering_in_frequency_range
-
 
 if __name__ == "__main__":
     length = 20 * 1e-3  # All dimension by default in m
@@ -16,12 +15,12 @@ if __name__ == "__main__":
 
     fig, ax = plt.subplots(1, 2, figsize=(10, 4))
     ax[0].plot(fr, sc)
-    ax[0].set_xlabel('Frequency (MHz)')
-    ax[0].set_ylabel('Forward Scattering (m^2)')
-    ax[0].ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
+    ax[0].set_xlabel("Frequency (MHz)")
+    ax[0].set_ylabel("Forward Scattering (m^2)")
+    ax[0].ticklabel_format(style="sci", axis="y", scilimits=(0, 0))
 
     ax[1].plot(fr, gain)
-    ax[1].set_xlabel('Frequency (GHz)')
-    ax[1].set_ylabel('S21')
+    ax[1].set_xlabel("Frequency (GHz)")
+    ax[1].set_ylabel("S21")
 
     plt.show()

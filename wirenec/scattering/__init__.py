@@ -1,1 +1,1 @@
-from wirenec.scattering.scattering import get_scattering_in_frequency_range
+from wirenec.scattering.scattering import get_scattering_in_frequency_range as get_scattering_in_frequency_range
